@@ -1,5 +1,5 @@
 export const getEntityURL = (paths: string[]): string => {
-    const baseURL = import.meta.env.API_BASE_URL;
+    const baseURL = 'http://localhost:4000'
     return `${baseURL}/${paths.join('/')}`;
 }
 

@@ -3,9 +3,15 @@ export interface UserCredentials {
     password: string;
   }
   
-
-  
-  export interface LoginFormProps {
+export interface LoginFormProps {
     onSubmit: (data: UserCredentials) => void;
     isLoading?: boolean;
+}
+
+export interface AcademicEvent {
+  event: string;
+  fallStart: string;
+  fallEnd: string;
+  springStart: string;
+  springEnd: string;
 }

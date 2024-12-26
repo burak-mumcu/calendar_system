@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "target": "es6",                          // Hedef JavaScript sürümü
+      "module": "commonjs",                     // Modül sistemi
+      "strict": true,                           // Sıkı tip denetimi
+      "esModuleInterop": true,                  // ES modülleri ile CommonJS modülleri arasında uyumluluk
+      "skipLibCheck": true,                     // Kütüphane dosyalarını kontrol etme
+      "forceConsistentCasingInFileNames": true, // Dosya adlarında tutarlılık sağla
+      "outDir": "./dist",                       // Derlenmiş dosyaların çıkış dizini
+      "rootDir": "./src",                       // Proje kök dizini
+      "moduleResolution": "node",                // Modül çözümleme stratejisi
+      "baseUrl": "./",                          // Temel dizin
+      "paths": {
+        "*": ["node_modules/*", "src/types/*"] // Özel yollar
+      }
+    },
+    "include": ["src/**/*"],                    // Derlenecek dosyalar
+    "exclude": ["node_modules", "dist"]        // Hariç tutulacak dosyalar
+  }

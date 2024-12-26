@@ -1,54 +1,52 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LoginForm } from './components/LoginForm';
-import { getEntityURL } from './lib/api';
-import { UserCredentials } from './lib/types';
-import axios from 'axios';
-import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { LoginForm } from "./pages/LoginForm";
+import { getEntityURL } from "./lib/api";
+import { UserCredentials } from "./lib/types";
+import axios from "axios";
+import { useState } from "react";
+import Home from "./pages/Home";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate()
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Uygulama başladığında localStorage'dan kontrol et
+    return !!localStorage.getItem("token");
+  });
 
-  const handleLogin = (credentials: UserCredentials) => {
-    let entityURL = getEntityURL(["auth","login"])
-    axios.post(entityURL, credentials).then(response => {
-      if(response.status === 200) {
-        localStorage.setItem('token', response.data.token);
+  const handleLogin = async (credentials: UserCredentials) => {
+    try {
+      const entityURL = getEntityURL(["auth", "login"]);
+      const response = await axios.post(entityURL, credentials);
+
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
         setIsAuthenticated(true);
+        navigate('/')
       }
-    }).catch(error => {
-      console.error('Giriş hatası:', error);
-    });
+    } catch (error) {
+      console.error("Giriş hatası:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
   };
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={
-          isAuthenticated ? 
-            <Navigate to="/main" /> : 
-            <LoginForm onSubmit={handleLogin} isLoading={false} />
-        } />
-        <Route path="/main" element={
-          isAuthenticated ? 
-            <MainPage /> : 
-            <Navigate to="/login" />
-        } />
-        <Route path="/" element={<Navigate to="/login" />} />
+        {/* Login Sayfası */}
+        <Route
+          path="/login"
+          element={<LoginForm onSubmit={handleLogin} isLoading={false} />}
+        />
+        {/* Ana Sayfa */}
+        <Route
+          path="/"
+          element={<Home isAuthenticated={isAuthenticated} onLogout={handleLogout} />}
+        />
       </Routes>
     </Router>
-  );
-}
-
-function MainPage() {
-  return (
-    <div>
-      <h1>Ana Sayfa</h1>
-      <button onClick={() => {
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      }}>
-        Çıkış Yap
-      </button>
-    </div>
   );
 }
