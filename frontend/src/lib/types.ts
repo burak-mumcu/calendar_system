@@ -15,3 +15,20 @@ export interface AcademicEvent {
   springStart: string;
   springEnd: string;
 }
+
+export interface ICalendars {
+  name:string,
+  subtitle:string,
+  calendar:AcademicEvent[]
+}
+
+export interface NavbarProps {
+  onLogout:() => void
+}
+
+export interface IUser {
+  name: string,
+  email: string,
+  password: string,
+  role: string
+}

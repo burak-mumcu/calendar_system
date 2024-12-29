@@ -1,5 +1,6 @@
 import React from 'react';
 import { AcademicEvent } from '../lib/types';
+import { Button } from './Button';
 
 
 interface ModalProps {
@@ -9,6 +10,7 @@ interface ModalProps {
 }
 
 export const Modal: React.FC<ModalProps> = ({ event, isOpen, onClose }) => {
+  const isAdmin = localStorage.getItem('role') === 'admin' ? true : false;
   if (!isOpen || !event) return null;
 
   return (

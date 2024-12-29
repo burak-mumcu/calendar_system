@@ -3,8 +3,10 @@ import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { UserCredentials } from '../lib/types';
 import { LoginFormProps } from '../lib/types';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<UserCredentials>({
     email: '',
     password: ''
@@ -30,10 +32,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading }) => 
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onSubmit(formData);
+      await onSubmit(formData);
+      navigate('/');
     }
   };
 

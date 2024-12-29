@@ -7,7 +7,6 @@ import { useState } from "react";
 import Home from "./pages/Home";
 
 export default function App() {
-  const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Uygulama başladığında localStorage'dan kontrol et
     return !!localStorage.getItem("token");
@@ -21,7 +20,7 @@ export default function App() {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         setIsAuthenticated(true);
-        navigate('/')
+        
       }
     } catch (error) {
       console.error("Giriş hatası:", error);
@@ -44,7 +43,7 @@ export default function App() {
         {/* Ana Sayfa */}
         <Route
           path="/"
-          element={<Home isAuthenticated={isAuthenticated} onLogout={handleLogout} />}
+          element={<Home onLogout={handleLogout} />}
         />
       </Routes>
     </Router>

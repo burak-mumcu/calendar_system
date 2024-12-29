@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, X, User, LogOut } from 'lucide-react';
+import { getEntityURL } from '../lib/api';
+import axios from 'axios';
+import {NavbarProps,IUser }from '../lib/types'
 
-interface NavbarProps {
-  isAuthenticated: boolean;
-  onLogout:() => void
-}
 
-const Navbar: React.FC<NavbarProps> = ({ isAuthenticated,onLogout }) => {
+
+const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
+  const [user,setUser] = useState<IUser | null>(null);
+  const isAuthenticated = localStorage.getItem('token');
+  
+  useEffect(() => {
+    getUser()
+  },[])
+  
+  const getUser = async () => {
+    if(isAuthenticated){
+      const entityURL = getEntityURL(["auth", "me"]);
+      const response = await axios.get(entityURL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });      
+      if(response?.data){
+        setUser(response.data)
+        localStorage.setItem('role',response?.data?.role);
+        }
+    }
+    
+  }
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -36,11 +59,11 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated,onLogout }) => {
               İletişim
             </a>
             
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <div className="flex items-center space-x-4">
-                <a href="/profile" className="flex items-center text-gray-700 hover:text-blue-600">
+                <a className="flex items-center text-gray-700 hover:text-blue-600">
                   <User className="h-5 w-5 mr-1" />
-                  Profil
+                  {user.name}
                 </a>
                 <button
                   onClick={onLogout}
@@ -57,12 +80,6 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated,onLogout }) => {
                   className="px-4 py-2 text-gray-700 hover:text-blue-600"
                 >
                   Giriş
-                </a>
-                <a
-                  href="/register"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Kayıt Ol
                 </a>
               </div>
             )}
@@ -97,11 +114,11 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated,onLogout }) => {
                 İletişim
               </a>
               
-              {isAuthenticated ? (
+              {isAuthenticated && user ? (
                 <>
                   <a href="/profile" className="flex items-center text-gray-700 hover:text-blue-600">
                     <User className="h-5 w-5 mr-1" />
-                    Profil
+                    {user.name}
                   </a>
                   <button
                     onClick={onLogout}

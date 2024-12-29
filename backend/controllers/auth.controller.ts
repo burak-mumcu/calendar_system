@@ -46,6 +46,7 @@ export const getMe = async (req: Request, res: Response) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role:user.role,
       });
     } else {
       res.status(404).json({ message: 'Kullanıcı bulunamadı' });
