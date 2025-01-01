@@ -23,7 +23,7 @@ export const createCalendar = async (req:Request,res:Response) => {
     try {
         const { calendar } = req.body;
         const calendars = CalendarModel.findOne({name : calendar.name})
-        if(!!calendars) return res.status(500).json({message : 'bu isimde bir takvim bulunmakta'})
+        if(!calendars) return res.status(500).json({message : 'bu isimde bir takvim bulunmakta'})
            let created = await CalendarModel.create(calendar)
            res.status(200).json({created});  
     } catch (error) {

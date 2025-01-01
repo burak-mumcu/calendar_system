@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {isAdmin ? (<a href="/calendar" className="text-gray-700 hover:text-blue-600">
+            {isAdmin ? (<a href="/addCalendar" className="text-gray-700 hover:text-blue-600">
               Takvim ekle
             </a>) : ''}
 

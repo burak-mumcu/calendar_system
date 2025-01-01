@@ -11,6 +11,8 @@ export interface AcademicEvent {
 
 // Takvim Koleksiyonu (Calendar) Şeması
 interface CalendarDocument extends Document { 
+  name: string;
+  subtitle: string;
   calendar: AcademicEvent[];
 }
 
@@ -24,6 +26,8 @@ const academicEventSchema = new Schema<AcademicEvent>({
 });
 
 const calendarSchema = new Schema<CalendarDocument>({
+  name: String,
+  subtitle: String,
   calendar: [academicEventSchema],  // Takvime ait etkinlikler
 });
 

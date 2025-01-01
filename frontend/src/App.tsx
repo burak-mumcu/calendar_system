@@ -5,6 +5,7 @@ import { UserCredentials } from "./lib/types";
 import axios from "axios";
 import { useState } from "react";
 import Home from "./pages/Home";
+import AcademicCalendarForm from "./pages/AcademicCalendarForm"; 
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -44,6 +45,11 @@ export default function App() {
         <Route
           path="/"
           element={<Home onLogout={handleLogout} />}
+        />
+        {/* Takvim Ekleme Sayfası */}
+        <Route 
+        path="/addCalendar"
+        element={<AcademicCalendarForm/>}
         />
       </Routes>
     </Router>
