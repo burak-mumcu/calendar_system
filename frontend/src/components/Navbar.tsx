@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X, User, LogOut } from 'lucide-react';
+import { User, LogOut,X,Menu } from 'lucide-react';
 import { getEntityURL } from '../lib/api';
 import axios from 'axios';
-import {NavbarProps,IUser }from '../lib/types'
+import { NavbarProps, IUser } from '../lib/types';
 
-
-
-const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
-  const [user,setUser] = useState<IUser | null>(null);
+const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
+  const isAdmin = localStorage.getItem('role') === 'admin'
+  const [user, setUser] = useState<IUser | null>(null);
   const isAuthenticated = localStorage.getItem('token');
   
   useEffect(() => {
-    getUser()
-  },[])
+    getUser();
+  }, []);
   
   const getUser = async () => {
-    if(isAuthenticated){
-      const entityURL = getEntityURL(["auth", "me"]);
+    if (isAuthenticated) {
+      const entityURL = getEntityURL(['auth', 'me']);
       const response = await axios.get(entityURL, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });      
-      if(response?.data){
-        setUser(response.data)
-        localStorage.setItem('role',response?.data?.role);
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      if (response?.data) {
+        setUser(response.data);
+        localStorage.setItem('role', response?.data?.role);
+      }
     }
-    
-  }
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,7 +38,6 @@ const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
     <nav className="bg-white shadow-lg">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          
           <div className="flex items-center">
             <a href="/" className="text-xl font-bold text-blue-600">
               KLU Takvimi
@@ -49,16 +46,10 @@ const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="text-gray-700 hover:text-blue-600">
-              Ana Sayfa
-            </a>
-            <a href="/about" className="text-gray-700 hover:text-blue-600">
-              Hakkımızda
-            </a>
-            <a href="/contact" className="text-gray-700 hover:text-blue-600">
-              İletişim
-            </a>
-            
+            {isAdmin ? (<a href="/calendar" className="text-gray-700 hover:text-blue-600">
+              Takvim ekle
+            </a>) : ''}
+
             {isAuthenticated && user ? (
               <div className="flex items-center space-x-4">
                 <a className="flex items-center text-gray-700 hover:text-blue-600">
@@ -104,16 +95,11 @@ const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
         {isOpen && (
           <div className="md:hidden py-4">
             <div className="flex flex-col space-y-4">
-              <a href="/" className="text-gray-700 hover:text-blue-600">
-                Ana Sayfa
-              </a>
-              <a href="/about" className="text-gray-700 hover:text-blue-600">
-                Hakkımızda
-              </a>
-              <a href="/contact" className="text-gray-700 hover:text-blue-600">
-                İletişim
-              </a>
-              
+            {isAdmin ? (<a href="/calendar" className="text-gray-700 hover:text-blue-600">
+              Takvim ekle
+            </a>) : ''}
+
+
               {isAuthenticated && user ? (
                 <>
                   <a href="/profile" className="flex items-center text-gray-700 hover:text-blue-600">
@@ -130,17 +116,8 @@ const Navbar: React.FC<NavbarProps> = ({onLogout }) => {
                 </>
               ) : (
                 <>
-                  <a
-                    href="/login"
-                    className="text-gray-700 hover:text-blue-600"
-                  >
+                  <a href="/login" className="text-gray-700 hover:text-blue-600">
                     Giriş
-                  </a>
-                  <a
-                    href="/register"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-center"
-                  >
-                    Kayıt Ol
                   </a>
                 </>
               )}

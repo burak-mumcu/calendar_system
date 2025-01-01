@@ -17,10 +17,10 @@ interface CalendarDocument extends Document {
 // Mongoose Şeması
 const academicEventSchema = new Schema<AcademicEvent>({
   event: { type: String, required: true },
-  fallStart: { type: String, required: true },
-  fallEnd: { type: String, required: true },
-  springStart: { type: String, required: true },
-  springEnd: { type: String, required: true },
+  fallStart: { type: String,},
+  fallEnd: { type: String,},
+  springStart: { type: String,},
+  springEnd: { type: String,},
 });
 
 const calendarSchema = new Schema<CalendarDocument>({

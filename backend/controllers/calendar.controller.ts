@@ -33,13 +33,58 @@ export const createCalendar = async (req:Request,res:Response) => {
 
 export const updateCalendar = async (req:Request,res:Response) => {
 try {
-    const {calendar} = req.body
-    const calendars = CalendarModel.findOne({name : calendar.name})
-    if(!calendars) res.status(500).json({message : 'takvim bulunamadı'})
-    calendars.updateOne(calendar)       
-    res.status(200).json({message : 'takvim güncellendi'})
+    const { event,name } = req.body
+    const calendar = await CalendarModel.findOne({ name: name });
+  if (!calendar) {
+    return res.status(404).json({ message: 'Takvim bulunamadı' });
+  }
+
+  // Etkinlik güncelleme
+  const updatedEvents = calendar.calendar.map((item) => {
+    if (item.event === event.event) {
+      return{ ...item, ...event };
+    }
+    return item; 
+  });
+
+  calendar.calendar = updatedEvents;
+
+
+  await calendar.save();
+
+  res.status(200).json({ message: 'Takvim güncellendi' });
 } 
 catch (error) {
-    return res.status(500).json({ message: 'Sunucu hatası.' });
+    return res.status(500).json({ message: 'Sunucu hatası.' + error });
     }    
+}
+
+export const deleteCalendarEvent = async(req:Request,res:Response) => {
+try {
+  const {eventName , name } = req.body;
+  const calendar = await CalendarModel.findOne({ name: name });
+  if (!calendar) {
+    return res.status(404).json({ message: 'Takvim bulunamadı' });
+  }
+
+  calendar.calendar = calendar.calendar.filter((item) => {
+    if(item.event !== eventName) return item;
+  });
+
+  await calendar.save();
+  res.status(200).json({ message: 'Olay başarıyla silindi' });
+
+} catch (error) {
+  res.status(500).json({message : 'sunucu hatası' + error})
+}
+}
+
+export const deleteCalendar = async (req:Request,res:Response) => {
+  try {
+    const {calendar} = req.body;
+    CalendarModel.findOneAndDelete({name : calendar.name})
+    res.status(500).json({message : 'Takvim başarıyla silindi'})
+  } catch (error) {
+    return res.status(500).json({ message: 'Sunucu hatası.' });
+  }
 }
