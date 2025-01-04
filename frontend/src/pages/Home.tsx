@@ -38,8 +38,13 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
     }
   };
 
-  const deleteCalendar = async () => {
-    return 1;
+  const deleteCalendar = async (calendarName:string) => {
+    const url = getEntityURL(["calendar/delete"])
+    let response = await axios.post(url,calendarName)
+    if(response.status !== 200) alert('bir hata oluştu');
+    else {
+        alert('takvim başarıyla silindi');
+    } 
   }
 
   const logout = () => {
@@ -119,7 +124,7 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
           <div className="flex justify-end space-x-4 mt-4">
             <CalendarExporter events={calendar.calendar} />
             <button
-              onClick={() => deleteCalendar()}
+              onClick={() => deleteCalendar(calendar.name)}
               className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
             >
               Takvimi Sil
