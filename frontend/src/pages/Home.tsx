@@ -15,6 +15,7 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onLogout }) => {
   const navigate = useNavigate();
+  const isAdmin = localStorage.getItem('role') === 'admin' ? true : false
   const [selectedEvent, setSelectedEvent] = useState<AcademicEvent | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [calendars, setCalendars] = useState<[ICalendars] | null>(null);
@@ -123,12 +124,14 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
           </div>
           <div className="flex justify-end space-x-4 mt-4">
             <CalendarExporter events={calendar.calendar} />
-            <button
+            {isAdmin ? ( <button 
               onClick={() => deleteCalendar(calendar.name)}
               className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
             >
               Takvimi Sil
-            </button>
+            </button> ) : ''}
+
+           
           </div>
           <Modal 
             name = {calendar.name}
