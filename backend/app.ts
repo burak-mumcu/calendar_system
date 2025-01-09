@@ -18,7 +18,7 @@ connectDB();
 app.use('/auth', authRoutes);
 app.use('/calendar',calendarRoutes)
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portunda çalışıyor`);

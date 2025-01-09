@@ -81,9 +81,12 @@ try {
 
 export const deleteCalendar = async (req:Request,res:Response) => {
   try {
-    const {calendarName} = req.body;
-    CalendarModel.findOneAndDelete({name : calendarName})
-    res.status(201).json({message : 'Takvim başarıyla silindi'})
+    const { calendarName } = req.body;
+    const result = await CalendarModel.findOneAndDelete({ name: calendarName });
+    if (!result) {
+      return res.status(404).json({ message: 'Takvim bulunamadı.' });
+    }
+    res.status(200).json({ message: 'Takvim başarıyla silindi' });
   } catch (error) {
     return res.status(500).json({ message: 'Sunucu hatası.' });
   }

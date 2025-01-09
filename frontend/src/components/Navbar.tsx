@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <a href="/" className="text-xl font-bold text-blue-600">
-              KLU Takvimi
+              Akademik Takvim
             </a>
           </div>
 
@@ -102,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
 
               {isAuthenticated && user ? (
                 <>
-                  <a href="/profile" className="flex items-center text-gray-700 hover:text-blue-600">
+                  <a className="flex items-center text-gray-700 hover:text-blue-600">
                     <User className="h-5 w-5 mr-1" />
                     {user.name}
                   </a>

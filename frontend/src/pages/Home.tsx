@@ -40,8 +40,8 @@ const Home: React.FC<HomeProps> = ({ onLogout }) => {
   };
 
   const deleteCalendar = async (calendarName:string) => {
-    const url = getEntityURL(["calendar/delete"])
-    let response = await axios.post(url,calendarName)
+    const url = getEntityURL(["calendar","delete"])
+    let response = await axios.post(url,{calendarName})
     if(response.status !== 200) alert('bir hata oluştu');
     else {
         alert('takvim başarıyla silindi');
